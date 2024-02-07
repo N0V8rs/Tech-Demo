@@ -1,17 +1,21 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float walkSpeed = 3.0f;
-    [SerializeField] private float sprintSpeed = 6.0f; 
+    [SerializeField] private float sprintSpeed = 6.0f;
     [SerializeField] private float jumpForce = 8.0f;
     private float currentSpeed;
 
     [Header("Look Settings")]
     [SerializeField] private float mouseSensitivity = 2.0f;
     [SerializeField] private float upDownLimit = 65f;
+
+    [Header("Teleport")]
+    [SerializeField] private Vector3 Teleport;
 
     private float verticalRotation;
     private Camera playerCamera;
@@ -45,6 +49,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             currentSpeed = walkSpeed;
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //Vector3 Teleport;
+            //Teleport = new Vector3(15, 0, 0);
+            gameObject.transform.position = Teleport;
         }
     }
 
