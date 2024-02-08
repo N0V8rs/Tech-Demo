@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3192331601841790568}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,6 +51,7 @@ MonoBehaviour:
   jumpForce: 2
   mouseSensitivity: 2
   upDownLimit: 65
+  Teleport: {x: 0, y: 0, z: 0}
 --- !u!143 &3192331601841790568
 CharacterController:
   m_ObjectHideFlags: 0

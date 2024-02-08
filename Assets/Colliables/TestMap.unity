@@ -348,6 +348,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5022708078619861730, guid: 852bc4d52d4ca914bb76a903dc870e42, type: 3}
+      propertyPath: Teleport.y
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -385,8 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8a6c7cff198e3849b287cc2a3936b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CoinCounter: {fileID: 1898140490}
-  Coins: 5
+  coinText: {fileID: 1898140490}
 --- !u!114 &1423361157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,7 +554,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -306.7234, y: 187.1482}
+  m_AnchoredPosition: {x: -306.7234, y: 135.56248}
   m_SizeDelta: {x: 182.3259, y: 47.6442}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1934466755
@@ -586,7 +589,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56bd3a3d323ec2f40828035aa9c58834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Score: 1
+  coinValue: 2
+  collectSound: {fileID: 0}
 --- !u!65 &1934466757
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -602,7 +606,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

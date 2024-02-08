@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
         {
             currentSpeed = walkSpeed;
         }
+        
         if (Input.GetKey(KeyCode.T))
         {
             //Vector3 Teleport;

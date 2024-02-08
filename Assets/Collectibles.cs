@@ -1,27 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Collectibles : MonoBehaviour
+public class Collectible : MonoBehaviour
 {
-    public int Score;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public int coinValue = 1; // Value of the collectible (e.g., how many coins it's worth)
+    public AudioClip collectSound; // Sound played when collected
 
     private void OnTriggerEnter(Collider other)
     {
-        enabled = false;
-        Score++;
+        if (other.CompareTag("Player"))
+        {
+            Collect(other.gameObject);
+        }
+    }
+
+    private void Collect(GameObject collector)
+    {
+        // Play collect sound
+      //if (collectSound != null)
+      //{
+      //    AudioSource.PlayClipAtPoint(collectSound, transform.position);
+      //}
+
+        // Update coin count in UI
+        CoinCounter coinCounter = collector.GetComponent<CoinCounter>();
+        if (coinCounter != null)
+        {
+            coinCounter.IncrementCoinCount(coinValue);
+        }
+
+        // Destroy the collectible object
+        Destroy(gameObject);
     }
 }

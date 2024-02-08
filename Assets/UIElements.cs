@@ -1,27 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIElements : MonoBehaviour
+public class CoinCounter : MonoBehaviour
 {
-    [SerializeField]public Text CoinCounter;
-    public int Coins = 0;
+    public Text coinText; // Reference to the UI text element
+    private int coinCount = 0; // Counter for the number of coins collected
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        // Initialize coin count text
+        UpdateCoinText();
     }
 
-    // Update is called once per frame
-    void Update()
+    // Update the UI text element to display the current coin count
+    private void UpdateCoinText()
     {
-        CoinCounter.text = "Coins : " + Coins;
+        if (coinText != null)
+        {
+            coinText.text = "Coins: " + coinCount;
+        }
     }
 
-    public void CoinCounterUI()
+    // Call this method whenever the player collects a coin to increment the coin count
+    public void IncrementCoinCount(int value)
     {
-        Coins++;
+        coinCount += value;
+        UpdateCoinText();
     }
 }

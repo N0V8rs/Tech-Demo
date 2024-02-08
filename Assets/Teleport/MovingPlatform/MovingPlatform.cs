@@ -39,7 +39,7 @@ public class MovingPlatform : MonoBehaviour
             Vector3 movementDelta = transform.position - previousPosition;
 
             float playerSpeed = movementDelta.magnitude / Time.deltaTime;
-            float adjustmentRatio = playerSpeed > 0 ? speed / playerSpeed * 0.6f : 1f;
+            float adjustmentRatio = playerSpeed > 0 ? speed / playerSpeed * 1f : 1f;
 
             movementDelta *= adjustmentRatio;
 
