@@ -9,11 +9,19 @@ public class MovingCubePlatform : MonoBehaviour
     private Vector3 startPos;
     private Vector3 endPos;
     private bool movingToEnd = true;
+    private Vector3 playerOffset; // Offset between the player and the platform
 
     void Start()
     {
         startPos = startPoint.position;
         endPos = endPoint.position;
+
+        // Calculate initial player offset
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            playerOffset = player.transform.position - transform.position;
+        }
     }
 
     void Update()
@@ -37,6 +45,24 @@ public class MovingCubePlatform : MonoBehaviour
             // If the platform reaches the end point, switch direction
             movingToEnd = !movingToEnd;
         }
+
+        // Move the player along with the platform
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            player.transform.position = transform.position + playerOffset;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        other.transform.SetParent(transform);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        other.transform.SetParent(null);
     }
 }
+
 
