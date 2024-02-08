@@ -1,67 +1,73 @@
 using UnityEngine;
 
-public class MovingCubePlatform : MonoBehaviour
+public class MovingPlatform : MonoBehaviour
 {
-    public Transform startPoint; // The point where the platform starts
-    public Transform endPoint;   // The point where the platform ends
-    public float speed = 2f;     // Speed of the platform
+    public Transform[] waypoints; 
+    public float speed = 2f; 
 
-    private Vector3 startPos;
-    private Vector3 endPos;
-    private bool movingToEnd = true;
-    private Vector3 playerOffset; // Offset between the player and the platform
+    private int currentWaypointIndex = 0;
+    private bool playerOnPlatform = false;
+    private Transform playerTransform;
+    private Vector3 previousPosition;
 
     void Start()
     {
-        startPos = startPoint.position;
-        endPos = endPoint.position;
-
-        // Calculate initial player offset
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
-        {
-            playerOffset = player.transform.position - transform.position;
-        }
+        previousPosition = transform.position;
     }
 
     void Update()
     {
-        if (movingToEnd)
+        MovePlatform();
+    }
+
+    void MovePlatform()
+    {
+        if (waypoints.Length == 0)
+            return;
+
+        Vector3 targetPosition = waypoints[currentWaypointIndex].position;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime / Vector3.Distance(transform.position, targetPosition));
+
+
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
-            MovePlatform(startPos, endPos);
+            currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
         }
-        else
+
+        if (playerOnPlatform && playerTransform != null)
         {
-            MovePlatform(endPos, startPos);
+            Vector3 movementDelta = transform.position - previousPosition;
+
+            float playerSpeed = movementDelta.magnitude / Time.deltaTime;
+            float adjustmentRatio = playerSpeed > 0 ? speed / playerSpeed * 0.6f : 1f;
+
+            movementDelta *= adjustmentRatio;
+
+            playerTransform.GetComponent<CharacterController>().Move(movementDelta);
+        }
+
+        previousPosition = transform.position;
+
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerOnPlatform = true;
+            playerTransform = other.transform;
+            playerTransform.parent = transform;
+
         }
     }
 
-    void MovePlatform(Vector3 from, Vector3 to)
+    void OnTriggerExit(Collider other)
     {
-        transform.position = Vector3.MoveTowards(transform.position, to, speed * Time.deltaTime);
-
-        if (transform.position == to)
+        if (other.CompareTag("Player"))
         {
-            // If the platform reaches the end point, switch direction
-            movingToEnd = !movingToEnd;
+            playerOnPlatform = false;
+            playerTransform.parent = null; 
+            playerTransform = null;
         }
-
-        // Move the player along with the platform
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null)
-        {
-            player.transform.position = transform.position + playerOffset;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        other.transform.SetParent(transform);
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        other.transform.SetParent(null);
     }
 }
 
