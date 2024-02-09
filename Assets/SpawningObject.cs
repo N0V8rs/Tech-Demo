@@ -8,7 +8,6 @@ public class SpawningObject : MonoBehaviour
     public GameObject Cube;
 
     private bool timeStopped = false;
-    private float stopTime = 10f;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +18,7 @@ public class SpawningObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SpawnObject();
+        //SpawnObject();
     }
 
     void SpawnObject() 
@@ -33,6 +32,10 @@ public class SpawningObject : MonoBehaviour
         newObject.GetComponent<Renderer>().material.SetColor("_Color", Color.magenta);
         cube.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
         //newObject.AddComponent<Rigidbody>();
-        Time.timeScale = stopTime;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        SpawnObject();
     }
 }

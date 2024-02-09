@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 currentMovement = Vector3.zero;
     private CharacterController characterController;
 
+    private Vector3 checkpointPosition;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -88,6 +90,29 @@ public class PlayerController : MonoBehaviour
         if (characterController.isGrounded)
         {
             currentMovement.y = Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * jumpForce);
+        }
+    }
+
+    public void SetCheckpoint(Vector3 position)
+    {
+        checkpointPosition = position;
+    }
+
+    public void ResetToCheckpoint()
+    {
+        transform.position = checkpointPosition;
+    }
+
+    public void Die()
+    {
+        ResetToCheckpoint();
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("KillBox"))
+        {
+            Die();
         }
     }
 }
