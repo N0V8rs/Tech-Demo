@@ -7,12 +7,14 @@ public class PlatformTeleporter : MonoBehaviour
     public GameObject actionText;
 
     private bool playerInRange = false;
+    private bool playerTeleported = false;
 
     private void Update()
     {
-        if (playerInRange && Input.GetKeyDown(teleportKey))
+        if (playerInRange && Input.GetKeyDown(teleportKey) && !playerTeleported)
         {
             TeleportPlayer();
+            playerTeleported = true;
         }
     }
 
@@ -31,6 +33,7 @@ public class PlatformTeleporter : MonoBehaviour
         {
             actionText.SetActive(false);
             playerInRange = false;
+            playerTeleported = false; // Reset the teleport status
         }
     }
 
@@ -67,3 +70,5 @@ public class PlatformTeleporter : MonoBehaviour
         }
     }
 }
+
+
