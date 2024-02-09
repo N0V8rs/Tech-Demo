@@ -7,8 +7,6 @@ public class SpawningObject : MonoBehaviour
     public GameObject Prefab;
     public GameObject Cube;
 
-    private bool timeStopped = false;
-
     // Start is called before the first frame update
     void Start()
     {

@@ -119,5 +119,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinValue: 2
-  collectSound: {fileID: 0}
+  collectSound: {fileID: 8300000, guid: 6a4d8ffd1f3724542981336a10d9eeaa, type: 3}
   rotationSpeed: 45

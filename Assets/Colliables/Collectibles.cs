@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
-    public int coinValue = 1; // Value of the collectible (e.g., how many coins it's worth)
-    public AudioClip collectSound; // Sound played when collected
+    public int coinValue = 1; 
+    public AudioClip collectSound; 
     public float rotationSpeed;
 
     private void Update()
@@ -23,20 +23,16 @@ public class Collectible : MonoBehaviour
 
     private void Collect(GameObject collector)
     {
-        // Play collect sound
-      //if (collectSound != null)
-      //{
-      //    AudioSource.PlayClipAtPoint(collectSound, transform.position);
-      //}
+      if (collectSound != null)
+      {
+          AudioSource.PlayClipAtPoint(collectSound, transform.position);
+      }
 
-        // Update coin count in UI
         CoinCounter coinCounter = collector.GetComponent<CoinCounter>();
         if (coinCounter != null)
         {
             coinCounter.IncrementCoinCount(coinValue);
         }
-
-        // Destroy the collectible object
         Destroy(gameObject);
     }
 }
