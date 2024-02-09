@@ -1,56 +1,69 @@
 using UnityEngine;
 
-public class OnTrigger : MonoBehaviour
+public class PlatformTeleporter : MonoBehaviour
 {
-    public Transform teleportDestination; // Destination to teleport the player
-    public GameObject pressE; // UI element to prompt the player to press E
+    public Transform teleportDestination;
+    public KeyCode teleportKey = KeyCode.E;
+    public GameObject actionText;
 
-    void Start()
-    {
-        // Ensure that the UI element is initially inactive
-        pressE.SetActive(false);
-    }
+    private bool playerInRange = false;
 
-    void Update()
+    private void Update()
     {
-        // Check for the E key press when the UI element is active and the player is inside the trigger zone
-        if (pressE.activeSelf && Input.GetKeyDown(KeyCode.E))
+        if (playerInRange && Input.GetKeyDown(teleportKey))
         {
             TeleportPlayer();
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        // Check if the colliding object is the player
         if (other.CompareTag("Player"))
         {
-            // Activate the UI element to prompt the player to press E
-            pressE.SetActive(true);
+            actionText.SetActive(true);
+            playerInRange = true;
         }
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        // Check if the colliding object is the player
         if (other.CompareTag("Player"))
         {
-            // Deactivate the UI element
-            pressE.SetActive(false);
+            actionText.SetActive(false);
+            playerInRange = false;
         }
     }
 
-    void TeleportPlayer()
+    private void TeleportPlayer()
     {
-        // Find the player GameObject by tag
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-
-        // Ensure the player GameObject exists and the teleport destination is set
-        if (player != null && teleportDestination != null)
+        if (teleportDestination != null)
         {
-            // Teleport the player to the specified destination
-            player.transform.position = teleportDestination.position;
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+
+            if (player != null)
+            {
+                CharacterController characterController = player.GetComponent<CharacterController>();
+                if (characterController != null)
+                {
+                    characterController.enabled = false;
+                    player.transform.position = teleportDestination.position;
+                    player.transform.rotation = teleportDestination.rotation;
+                    characterController.enabled = true;
+                    actionText.SetActive(false);
+                }
+                else
+                {
+                    Debug.LogError("CharacterController component not found on player!");
+                }
+            }
+            else
+            {
+                Debug.LogError("Player not found!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Teleport destination is not set!");
         }
     }
 }
-

@@ -92,27 +92,4 @@ public class PlayerController : MonoBehaviour
             currentMovement.y = Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * jumpForce);
         }
     }
-
-    public void SetCheckpoint(Vector3 position)
-    {
-        checkpointPosition = position;
-    }
-
-    public void ResetToCheckpoint()
-    {
-        transform.position = checkpointPosition;
-    }
-
-    public void Die()
-    {
-        ResetToCheckpoint();
-    }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("KillBox"))
-        {
-            Die();
-        }
-    }
 }
