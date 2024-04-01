@@ -29,6 +29,8 @@ public class SpawningObject : MonoBehaviour
         //newObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
         newObject.GetComponent<Renderer>().material.SetColor("_Color", Color.magenta);
         cube.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+        newObject.transform.position = new Vector3(0, 0, 0);
+        cube.transform.position = new Vector3(0, 0, 0);
         //newObject.AddComponent<Rigidbody>();
     }
 
