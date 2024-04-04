@@ -12,6 +12,7 @@ public class AutoDoor : MonoBehaviour
     private Vector3 targetPosition;
     private bool doorMovingUp = false;
     private bool doorMovingDown = false;
+    public AudioSource doorOpenng;
 
     // Start is called before the first frame update
     void Start()
@@ -45,11 +46,13 @@ public class AutoDoor : MonoBehaviour
     {
         doorMovingUp = true;
         doorMovingDown = false;
+        doorOpenng.Play();
     }
 
     private void OnTriggerExit(Collider other)
     {
         doorMovingDown = true;
         doorMovingUp = false;
+        doorOpenng.Play();
     }
 }
