@@ -14,6 +14,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float mouseSensitivity = 2.0f;
     [SerializeField] private float upDownLimit = 65f;
 
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip walkSound;
+    [SerializeField] private AudioClip sprintSound;
+    private AudioSource audioSource;
+
     private float verticalRotation;
     private Camera playerCamera;
     private Vector3 currentMovement = Vector3.zero;
@@ -28,6 +33,7 @@ public class PlayerController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         playerCamera = GetComponentInChildren<Camera>();
         currentSpeed = walkSpeed;
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -43,11 +49,15 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             currentSpeed = sprintSpeed;
+            audioSource.clip = sprintSound;
+            audioSource.Play();
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             currentSpeed = walkSpeed;
+            audioSource.clip = walkSound;
+            audioSource.Play();
         }
     }
 
