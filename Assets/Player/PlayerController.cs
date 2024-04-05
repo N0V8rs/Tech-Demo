@@ -13,8 +13,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("Health Settings")]
     [SerializeField] private int maxHealth = 100;
+    [SerializeField] private Vector3 DeathScreen;
     private int currentHealth;
     public TextMeshProUGUI healthText;
+    public bool isDead = false;
 
     [Header("Look Settings")]
     [SerializeField] private float mouseSensitivity = 2.0f;
@@ -31,6 +33,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 currentMovement = Vector3.zero;
     private CharacterController characterController;
 
+    public GameObject endGame;
+
     private Vector3 checkpointPosition;
 
     void Start()
@@ -46,29 +50,32 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
-        HandleLook();
-        healthText.text = "Health: " + currentHealth;
-
-        if (Input.GetButtonDown("Jump"))
+        if (!isDead)
         {
-            Jump();
-        }
+            HandleMovement();
+            HandleLook();
+            healthText.text = "Health: " + currentHealth;
 
-        if (characterController.isGrounded)
-        {
-            if (Input.GetKey(KeyCode.LeftShift) && IsMovingOnGround())
+            if (Input.GetButtonDown("Jump"))
             {
-                currentSpeed = sprintSpeed;
-                if (audioSource.clip != sprintSound || !audioSource.isPlaying)
-                {
-                    PlaySound(sprintSound);
-                }
+                Jump();
             }
-            else if (IsMovingOnGround() && !audioSource.isPlaying)
+
+            if (characterController.isGrounded)
             {
-                currentSpeed = walkSpeed;
-                PlaySound(walkSound);
+                if (Input.GetKey(KeyCode.LeftShift) && IsMovingOnGround())
+                {
+                    currentSpeed = sprintSpeed;
+                    if (audioSource.clip != sprintSound || !audioSource.isPlaying)
+                    {
+                        PlaySound(sprintSound);
+                    }
+                }
+                else if (IsMovingOnGround() && !audioSource.isPlaying)
+                {
+                    currentSpeed = walkSpeed;
+                    PlaySound(walkSound);
+                }
             }
         }
     }
@@ -84,7 +91,18 @@ public class PlayerController : MonoBehaviour
 
     private void Die()
     {
+        Cursor.visible = true;
+        isDead = true;
+        endGame.SetActive(true);
         Debug.Log("Player died!");
+
+        transform.position = DeathScreen;
+
+        GameObject pauseGameObject = GameObject.Find("PauseGame");
+        if (pauseGameObject != null)
+        {
+            pauseGameObject.SetActive(false);
+        }
     }
 
     void HandleMovement()

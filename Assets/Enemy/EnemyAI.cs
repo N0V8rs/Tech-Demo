@@ -31,6 +31,7 @@ public class EnemyAI : MonoBehaviour
     private float retreatOn;
 
     [SerializeField] private float attackRadius = 5.0f;
+    [SerializeField] private float attackTimer = 2.0f;
     [SerializeField] private float chaseRadius = 8.0f;
     private float distanceToPoint;
 
@@ -132,7 +133,12 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            playerController.TakeDamage(10); 
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= 1f) // Only attack every 1 second
+            {
+                playerController.TakeDamage(10); // Replace 10 with the amount of damage you want to deal
+                attackTimer = 0f; // Reset the timer after attacking
+            }
         }
     }
 
