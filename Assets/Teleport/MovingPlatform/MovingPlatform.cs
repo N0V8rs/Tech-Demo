@@ -18,6 +18,13 @@ public class MovingPlatform : MonoBehaviour
     void Update()
     {
         MovePlatform();
+
+        if (playerOnPlatform && playerTransform != null)
+        {
+            playerTransform.position += transform.position - previousPosition;
+        }
+
+        previousPosition = transform.position;
     }
 
     void MovePlatform()

@@ -14,6 +14,7 @@ public class RespawnOnFall : MonoBehaviour
     private TextMeshProUGUI statusText;
     public AudioClip respawnSound;
     public AudioClip checkpointSound;
+    private bool hasDisplayedCheckpointText = false;
     private AudioSource audioSource;
 
     void Start()
@@ -45,12 +46,27 @@ public class RespawnOnFall : MonoBehaviour
         if (other.CompareTag("Checkpoint"))
         {
             SetCheckpoint(other.transform.position);
-            statusText.text = "Checkpoint reached!";
-            statusTextObject.SetActive(true);
+            if (!hasDisplayedCheckpointText)
+            {
+                statusText.text = "Checkpoint reached!";
+                statusTextObject.SetActive(true);
+                hasDisplayedCheckpointText = true;
+                StartCoroutine(FadeOutText());
+            }
         }
         else if (other.CompareTag("KillBox"))
         {
             Respawn();
+        }
+    }
+
+    IEnumerator FadeOutText()
+    {
+        Color originalColor = statusText.color;
+        for (float t = 0.01f; t < 1; t += Time.deltaTime / 2)
+        {
+            statusText.color = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(originalColor.a, 0, t));
+            yield return null;
         }
     }
 }

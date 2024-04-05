@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
 
     public GameObject endGame;
+    public GameObject winGame;
 
     private Vector3 checkpointPosition;
 
@@ -173,5 +174,25 @@ public class PlayerController : MonoBehaviour
         audioSource.clip = clip;
         audioSource.Play();
         yield return new WaitForSeconds(clip.length);
+    }
+
+    private void Win()
+    {
+        Cursor.visible = true;
+        winGame.SetActive(true);
+        Debug.Log("Player won!");
+
+        GameObject pauseGameObject = GameObject.Find("PauseGame");
+        if (pauseGameObject != null)
+        {
+            pauseGameObject.SetActive(false);
+        }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("WinPoint"))
+        {
+            Win();
+        }
     }
 }
