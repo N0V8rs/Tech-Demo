@@ -13,6 +13,7 @@ public class RespawnOnFall : MonoBehaviour
     public GameObject statusTextObject;
     private TextMeshProUGUI statusText;
     public AudioClip respawnSound;
+    public AudioClip checkpointSound;
     private AudioSource audioSource;
 
     void Start()
@@ -36,6 +37,7 @@ public class RespawnOnFall : MonoBehaviour
     public void SetCheckpoint(Vector3 position)
     {
         checkpointPosition = position;
+        audioSource.PlayOneShot(checkpointSound);
     }
 
     void OnTriggerEnter(Collider other)
@@ -49,8 +51,6 @@ public class RespawnOnFall : MonoBehaviour
         else if (other.CompareTag("KillBox"))
         {
             Respawn();
-            statusText.text = "Player fell off the map!";
-            statusTextObject.SetActive(true);
         }
     }
 }

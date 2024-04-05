@@ -65,8 +65,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-        void HandleMovement()
+    void HandleMovement()
     {
+        if (PlatformTeleporter.playerTeleporting)
+        {
+            return; 
+        }
+
         Vector3 horizontalMovement = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
         horizontalMovement = transform.rotation * horizontalMovement;
 
@@ -76,6 +81,7 @@ public class PlayerController : MonoBehaviour
         currentMovement.y += Physics.gravity.y * Time.deltaTime;
 
         characterController.Move(currentMovement * Time.deltaTime);
+
     }
 
     void HandleLook()

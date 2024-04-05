@@ -1,19 +1,32 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlatformTeleporter : MonoBehaviour
 {
     public Transform teleportDestination;
     public KeyCode teleportKey = KeyCode.E;
     public GameObject actionText;
+    public AudioClip teleportSound;
+    private AudioSource audioSource;
+    public GameObject effects;
 
     private bool playerInRange = false;
     private bool playerTeleported = false;
+    public static bool playerTeleporting = false;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     private void Update()
     {
         if (playerInRange && Input.GetKeyDown(teleportKey) && !playerTeleported)
         {
-            TeleportPlayer();
+            audioSource.PlayOneShot(teleportSound);
+            playerTeleporting = true;
+            effects.SetActive(true);
+            StartCoroutine(TeleportPlayerAfterDelay(4.0f));
             playerTeleported = true;
         }
     }
@@ -53,6 +66,7 @@ public class PlatformTeleporter : MonoBehaviour
                     player.transform.rotation = teleportDestination.rotation;
                     characterController.enabled = true;
                     actionText.SetActive(false);
+                    effects.SetActive(false);
                 }
                 else
                 {
@@ -68,6 +82,13 @@ public class PlatformTeleporter : MonoBehaviour
         {
             Debug.LogError("Teleport destination is not set!");
         }
+    }
+
+    private IEnumerator TeleportPlayerAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        TeleportPlayer();
+        playerTeleporting = false; 
     }
 }
 
