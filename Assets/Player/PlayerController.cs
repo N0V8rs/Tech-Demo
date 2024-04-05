@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioClip walkSound;
     [SerializeField] private AudioClip sprintSound;
     private AudioSource audioSource;
+    private Coroutine audioCoroutine;
 
     private float verticalRotation;
     private Camera playerCamera;
@@ -46,22 +47,25 @@ public class PlayerController : MonoBehaviour
             Jump();
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (characterController.isGrounded)
         {
-            currentSpeed = sprintSpeed;
-            audioSource.clip = sprintSound;
-            audioSource.Play();
-        }
-
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            currentSpeed = walkSpeed;
-            audioSource.clip = walkSound;
-            audioSource.Play();
+            if (Input.GetKey(KeyCode.LeftShift) && IsMovingOnGround())
+            {
+                currentSpeed = sprintSpeed;
+                if (audioSource.clip != sprintSound || !audioSource.isPlaying)
+                {
+                    PlaySound(sprintSound);
+                }
+            }
+            else if (IsMovingOnGround() && !audioSource.isPlaying)
+            {
+                currentSpeed = walkSpeed;
+                PlaySound(walkSound);
+            }
         }
     }
 
-    void HandleMovement()
+        void HandleMovement()
     {
         Vector3 horizontalMovement = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
         horizontalMovement = transform.rotation * horizontalMovement;
@@ -90,6 +94,38 @@ public class PlayerController : MonoBehaviour
         if (characterController.isGrounded)
         {
             currentMovement.y = Mathf.Sqrt(2 * Mathf.Abs(Physics.gravity.y) * jumpForce);
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
+            if (audioCoroutine != null)
+            {
+                StopCoroutine(audioCoroutine);
+                audioCoroutine = null;
+            }
         }
+    }
+
+    private bool IsMovingOnGround()
+    {
+        Vector3 horizontalVelocity = characterController.velocity;
+        horizontalVelocity.y = 0; 
+        return horizontalVelocity.magnitude > 0;
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioCoroutine != null)
+        {
+            StopCoroutine(audioCoroutine);
+        }
+        audioCoroutine = StartCoroutine(PlaySoundCoroutine(clip));
+    }
+
+    private IEnumerator PlaySoundCoroutine(AudioClip clip)
+    {
+        audioSource.clip = clip;
+        audioSource.Play();
+        yield return new WaitForSeconds(clip.length);
     }
 }
