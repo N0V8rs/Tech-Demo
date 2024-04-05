@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     private int currentHealth;
     public TextMeshProUGUI healthText;
     public bool isDead = false;
+    public bool hasWon = false;
+    [SerializeField] private AudioClip deathSound;
+    [SerializeField] private AudioClip winSound;
 
     [Header("Look Settings")]
     [SerializeField] private float mouseSensitivity = 2.0f;
@@ -104,6 +107,12 @@ public class PlayerController : MonoBehaviour
         {
             pauseGameObject.SetActive(false);
         }
+
+        // Play the death sound
+        if (deathSound != null)
+        {
+            audioSource.PlayOneShot(deathSound);
+        }
     }
 
     void HandleMovement()
@@ -186,6 +195,14 @@ public class PlayerController : MonoBehaviour
         if (pauseGameObject != null)
         {
             pauseGameObject.SetActive(false);
+        }
+
+        isDead = true;
+
+        // Play the win sound
+        if (winSound != null)
+        {
+            audioSource.PlayOneShot(winSound);
         }
     }
     void OnTriggerEnter(Collider other)

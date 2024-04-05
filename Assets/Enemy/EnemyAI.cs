@@ -32,6 +32,7 @@ public class EnemyAI : MonoBehaviour
 
     [SerializeField] private float attackRadius = 5.0f;
     [SerializeField] private float attackTimer = 2.0f;
+    [SerializeField] private AudioClip attackSound;
     [SerializeField] private float chaseRadius = 8.0f;
     private float distanceToPoint;
 
@@ -138,6 +139,11 @@ public class EnemyAI : MonoBehaviour
             {
                 playerController.TakeDamage(10); // Replace 10 with the amount of damage you want to deal
                 attackTimer = 0f; // Reset the timer after attacking
+
+                if (attackSound != null)
+                {
+                    AudioSource.PlayClipAtPoint(attackSound, transform.position);
+                }
             }
         }
     }
