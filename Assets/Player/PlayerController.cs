@@ -14,9 +14,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float mouseSensitivity = 2.0f;
     [SerializeField] private float upDownLimit = 65f;
 
-    [Header("Teleport")]
-    [SerializeField] private Vector3 Teleport;
-
     private float verticalRotation;
     private Camera playerCamera;
     private Vector3 currentMovement = Vector3.zero;
@@ -51,13 +48,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             currentSpeed = walkSpeed;
-        }
-        
-        if (Input.GetKey(KeyCode.T))
-        {
-            //Vector3 Teleport;
-            //Teleport = new Vector3(15, 0, 0);
-            gameObject.transform.position = Teleport;
         }
     }
 
