@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,6 +10,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float sprintSpeed = 6.0f;
     [SerializeField] private float jumpForce = 8.0f;
     private float currentSpeed;
+
+    [Header("Health Settings")]
+    [SerializeField] private int maxHealth = 100;
+    private int currentHealth;
+    public TextMeshProUGUI healthText;
 
     [Header("Look Settings")]
     [SerializeField] private float mouseSensitivity = 2.0f;
@@ -35,12 +41,14 @@ public class PlayerController : MonoBehaviour
         playerCamera = GetComponentInChildren<Camera>();
         currentSpeed = walkSpeed;
         audioSource = GetComponent<AudioSource>();
+        currentHealth = maxHealth;
     }
 
     void Update()
     {
         HandleMovement();
         HandleLook();
+        healthText.text = "Health: " + currentHealth;
 
         if (Input.GetButtonDown("Jump"))
         {
@@ -63,6 +71,20 @@ public class PlayerController : MonoBehaviour
                 PlaySound(walkSound);
             }
         }
+    }
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        healthText.text = "Health: " + currentHealth;
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("Player died!");
     }
 
     void HandleMovement()
