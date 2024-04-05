@@ -96,6 +96,7 @@ public class PlayerController : MonoBehaviour
     private void Die()
     {
         Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         isDead = true;
         endGame.SetActive(true);
         Debug.Log("Player died!");
@@ -188,6 +189,7 @@ public class PlayerController : MonoBehaviour
     private void Win()
     {
         Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         winGame.SetActive(true);
         Debug.Log("Player won!");
 
